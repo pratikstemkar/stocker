@@ -10,7 +10,7 @@ public class ConnectionClass {
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection(url, username, password);
 
-        System.out.println("\n Database connection established");
+//        System.out.println("\n Database connection established");
 
         return con;
     }
@@ -41,6 +41,27 @@ public class ConnectionClass {
             Boolean result = false;
 
             String query = "INSERT INTO " + table_name + "(username, password) values ('"+username+"', '"+password+"');";
+            Statement st = con.createStatement();
+            int rs = st.executeUpdate(query);
+
+            result = (rs > 0);
+
+            st.close();
+            con.close();
+
+            return result;
+        } catch(Exception e){
+            e.printStackTrace();
+            return  false;
+        }
+    }
+
+    public Boolean deleteUser(String username){
+        try{
+            Connection con = createConnection();
+            Boolean result = false;
+
+            String query = "DELETE from user_details where username = '" + username + "';";
             Statement st = con.createStatement();
             int rs = st.executeUpdate(query);
 
